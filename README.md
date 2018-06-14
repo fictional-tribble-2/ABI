@@ -25,6 +25,10 @@ const wings = Wings.at(wingsAddress)
 
 ### 1. Create DAO
 
+First step in project creation process is creating a DAO. DAO is a a main contract in your project hierarchy.
+
+To create DAO perform the following actions:
+
 ```js
 await wings.createDAO(name, tokenName, tokenSymbol, infoHash, customCrowdsale, { from: account })
 ```
@@ -36,7 +40,27 @@ await wings.createDAO(name, tokenName, tokenSymbol, infoHash, customCrowdsale, {
  - `infoHash` - bytes32 - ipfs hash of project description
  - `customCrowdsale` - address - address of custom crowdsale (`"0"` in case of standard crowdsale)
 
+#### Generating infoHash
+
+The infoHash is basically a decoded ipfs hash. And the ipfs hash is using the same Base58 encoding that Bitcoin uses.
+To fit the ipfs into `infoHash` we first will need to decode it.
+
+**Example:**
+```js
+const bs58 = require('bs58')
+
+const ipfsAddress = 'QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG'
+
+let bytes = bs58.decode(ipfsAddress).toString('hex')
+
+// As for now that's the only format that ipfs uses, so we can just cut the first two bytes
+
+const infoHash = '0x' + bytes.substring(4)
+```
+
 ### 2. Get DAO address
+
+When DAO is created you can find it's address by calling Wings contract. As an argument you will have to pass keccak256 encrypted name of the project (same as the one you used during DAO creation).
 
 ```js
 const daoId = web3.sha3(name)
@@ -49,6 +73,8 @@ const daoAddress = (await wings.getDAOById.call(daoId)).toString()
 
 ### 3. Create Rewards Model
 
+When you have DAO address, you can initiate a contract instance by address and create rewards model.
+
 ```js
 const dao = DAO.at(daoAddress)
 
@@ -56,6 +82,10 @@ await dao.createModel({ from: account })
 ```
 
 ### 4. Create Forecasting
+
+*Required stage: model created*
+
+When rewards model is created you can create a forecasting.
 
 ```js
 await dao.createForecasting(forecastingDurationInHours, ethRewardPart, tokenRewardPart, { from: account })
@@ -71,6 +101,10 @@ await dao.createForecasting(forecastingDurationInHours, ethRewardPart, tokenRewa
 *Example: reward is 1.5% the argument must be passed as 15000.*
 
 ### 5. Start Forecasting
+
+*Required stage: forecasting created*
+
+When the model and forecasting are created you can start forecasting.
 
 ```js
 await dao.startForecasting(bucketMin, bucketMax, bucketStep, { from: account })
@@ -123,11 +157,19 @@ if (ethGoal < STEPS_IN_GOAL*1.1) {
 
 ### 6. Finish Forecasting
 
+*Required stage: forecasting started*
+
+After forecasting period you can close forecasting. This will automatically check forecasting for spam.
+
 ```js
 await dao.closeForecasting({ from: account })
 ```
 
 ### 7. Create token
+
+*Required stage: forecasting closed*
+
+When forecasting is closed you can create your project token. It will have the `tokenName` and a `tokenSymbol` which you used during DAO creation process.
 
 ```js
 await dao.createToken(decimals, { from: account })
@@ -137,6 +179,10 @@ await dao.createToken(decimals, { from: account })
  - `decimals` - uint8 - project token decimals
 
 ### 8. Create Crowdsale
+
+*Required stage: token created*
+
+When token is created you can start crowdsale.
 
 ```js
 await dao.createCrowdsale(minimalGoal, hardCap, prices1to4, prices5to8, { from: account })
