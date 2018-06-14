@@ -211,7 +211,7 @@ await dao.createCrowdsale(minimalGoal, hardCap, prices1to4, prices5to8, { from: 
 *Required stage: forecasting closed*
 
 When forecasting is closed you need to call method `createCustomCrowdsale`.  
-This step is required in order to finalise forecasting and reward wings community.
+This and following steps are required in order to finalise forecasting and reward wings community.
 
 ```js
 await dao.createCustomCrowdsale({ from: account })
@@ -234,16 +234,18 @@ When you have Crowdsale Controller address, initiate a contract instance and cal
 ```js
 const cc = CC.at(ccAddress)
 
-cc.start({ from: account })
+await cc.start({ from: account })
 ```
 
 ## Additional functions
 
 ### update
 
+This DAO method allows you to change project description during forecasting period.
+
 ```js
 await dao.update(infoHash, { from: account })
 ```
 
 **Parameters:**
- -  infoHash - bytes32 - decoded ipfs hash of updated project description
+ - `infoHash` - bytes32 - decoded ipfs hash of updated project description
