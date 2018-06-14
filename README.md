@@ -194,7 +194,7 @@ await dao.createToken(decimals, { from: account })
 
 *Required stage: token created*
 
-When token is created you can start crowdsale.
+When token is created you can create crowdsale.
 
 ```js
 await dao.createCrowdsale(minimalGoal, hardCap, prices1to4, prices5to8, { from: account })
@@ -221,7 +221,7 @@ await dao.createCustomCrowdsale({ from: account })
 
 ### 9. Get address of Crowdsale Controller
 
-In order to start crowdsale you'll need to find the address of Crowdsale Controller, which is the contract, created during the previous step.
+In order to start crowdsale you'll need to find the address of Crowdsale Controller, which is the contract created during the previous step.
 
 ```js
 const ccAddress = (await dao.crowdsaleController.call()).toString()
@@ -234,8 +234,13 @@ When you have Crowdsale Controller address, initiate a contract instance and cal
 ```js
 const cc = CC.at(ccAddress)
 
-await cc.start({ from: account })
+await cc.start(startTimestamp, endTimestamp, fundingAddress, { from: account })
 ```
+
+**Parameters:**
+ - `startTimestamp` - uint256 - unix timestamp of the start of crowdsale period
+ - `endTimestamp` - uint256 - unix timestamp of the end of crowdsale period
+ - `fundingAddress` - address - address of account, which will receive funds, collected during crowdsale period
 
 ## Additional functions
 
