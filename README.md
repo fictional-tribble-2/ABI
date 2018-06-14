@@ -6,13 +6,13 @@ Manual how to use Wings contracts ABI to create and manage your project.
 
 In this manual we will be using `Node.js`, `web3` (^0.20.6) and `truffle-contract` to operate with contracts.
 
-In order to use Wings contract you need to have contracts ABI.
-Head to `./abi/` folder where you'll find the following contracts artifacts:
+In order to use Wings contract you need to have contracts ABI.  
+In the `./abi` folder you can find the following contracts artifacts:
  - `Wings.json`
  - `DAO.json`
  - `CrowdsaleController.json`
 
-Here is a small example how to initiate contract:
+Here is a small example of how to initiate `Wings` contract:
 
 ```js
 const contract = require('truffle-contract')
