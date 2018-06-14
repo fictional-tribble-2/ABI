@@ -6,13 +6,13 @@ Manual how to use Wings contracts ABI to create and manage your project.
 
 In this manual we will be using `Node.js`, `web3` (^0.20.6) and `truffle-contract` to operate with contracts.
 
-In order to use Wings contract you need to have contracts ABI.  
+In order to use Wings contracts you need to have contracts ABI.  
 In the `./abi` folder you can find the following contracts artifacts:
  - `Wings.json`
  - `DAO.json`
  - `CrowdsaleController.json`
 
-Here is a small example of how to initiate `Wings` contract:
+Here is an example of how to initiate `Wings` contract:
 
 ```js
 const contract = require('truffle-contract')
@@ -80,6 +80,8 @@ const daoAddress = (await wings.getDAOById.call(daoId)).toString()
  - `name` - string - name of your project
 
 ### 3. Create Rewards Model
+
+*Required stage: initial*
 
 When you have DAO address, you can initiate a contract instance by address and create rewards model.
 
@@ -173,6 +175,8 @@ After forecasting period you can close forecasting. This will automatically chec
 await dao.closeForecasting({ from: account })
 ```
 
+## In case you are using Custom Crowdsale, skip step 7 and head to the step 8.1.
+
 ### 7. Create token
 
 *Required stage: forecasting closed*
@@ -202,7 +206,19 @@ await dao.createCrowdsale(minimalGoal, hardCap, prices1to4, prices5to8, { from: 
  - `prices1to4` - uint256 -
  - `prices5to8` - uint256 -
 
-### 9. Get address of CrowdsaleController
+### 8.1. Create Custom Crowdsale
+
+*Required stage: forecasting closed*
+
+When forecasting is closed you can need to call method `createCustomCrowdsale`.
+
+```js
+await dao.createCustomCrowdsale({ from: account })
+```
+
+*NOTE: During this step the manager of the Crowdsale will be transferred to a newly created Crowdsale Controller.*
+
+### 9. Get address of Crowdsale Controller
 
 In order to start crowdsale you'll need to find the address of Crowdsale Controller, which is the contract, created during the previous step.
 
@@ -219,3 +235,14 @@ const cc = CC.at(ccAddress)
 
 cc.start({ from: account })
 ```
+
+## Additional functions
+
+### update
+
+```js
+await dao.update(infoHash, { from: account })
+```
+
+**Parameters:**
+ -  infoHash - bytes32 - decoded ipfs hash of updated project description

@@ -3,9 +3,6 @@ pragma solidity ^0.4.23;
 
 contract CrowdsaleController {
 
-    // Is 3rd party contract
-    function is3rdParty() public view returns (bool);
-
     // Detect if forecasting closed
     function forecastingClosed() public view returns (bool);
 
