@@ -38,7 +38,7 @@ First step in project creation process is creating a DAO. DAO is a main contract
 To create DAO perform the following actions:
 
 ```js
-await wings.createDAO(name, tokenName, tokenSymbol, infoHash, customCrowdsale, { from: account })
+await wings.createDAO(name, tokenName, tokenSymbol, infoHash, customCrowdsale, { from: creator })
 ```
 
 **Parameters:**
@@ -88,7 +88,7 @@ When you have DAO address, you can initiate a contract instance by address and c
 ```js
 const dao = DAO.at(daoAddress)
 
-await dao.createModel({ from: account })
+await dao.createModel({ from: creator })
 ```
 
 ### 4. Create Forecasting
@@ -98,7 +98,7 @@ await dao.createModel({ from: account })
 When rewards model is created you can create a forecasting.
 
 ```js
-await dao.createForecasting(forecastingDurationInHours, ethRewardPart, tokenRewardPart, { from: account })
+await dao.createForecasting(forecastingDurationInHours, ethRewardPart, tokenRewardPart, { from: creator })
 ```
 
 **Parameters:**
@@ -117,7 +117,7 @@ await dao.createForecasting(forecastingDurationInHours, ethRewardPart, tokenRewa
 When the model and forecasting are created you can start forecasting.
 
 ```js
-await dao.startForecasting(bucketMin, bucketMax, bucketStep, { from: account })
+await dao.startForecasting(bucketMin, bucketMax, bucketStep, { from: creator })
 ```
 
 **Parameters:**
@@ -172,7 +172,7 @@ if (ethGoal < STEPS_IN_GOAL*1.1) {
 After forecasting period you can close forecasting. This will automatically check forecasting for spam.
 
 ```js
-await dao.closeForecasting({ from: account })
+await dao.closeForecasting({ from: creator })
 ```
 
 ## In case you are using Custom Crowdsale, skip step 7 and head to the step 8.1.
@@ -184,7 +184,7 @@ await dao.closeForecasting({ from: account })
 When forecasting is closed you can create your project token. It will have the `tokenName` and a `tokenSymbol` which you used during DAO creation process.
 
 ```js
-await dao.createToken(decimals, { from: account })
+await dao.createToken(decimals, { from: creator })
 ```
 
 **Parameters:**
@@ -197,7 +197,7 @@ await dao.createToken(decimals, { from: account })
 When token is created you can create crowdsale.
 
 ```js
-await dao.createCrowdsale(minimalGoal, hardCap, prices1to4, prices5to8, { from: account })
+await dao.createCrowdsale(minimalGoal, hardCap, prices1to4, prices5to8, { from: creator })
 ```
 
 **Parameters:**
@@ -214,7 +214,7 @@ When forecasting is closed you need to call method `createCustomCrowdsale`.
 This and following steps are required in order to finalise forecasting and reward wings community.
 
 ```js
-await dao.createCustomCrowdsale({ from: account })
+await dao.createCustomCrowdsale({ from: creator })
 ```
 
 *NOTE: During this step the manager of the Crowdsale will be transferred to a newly created Crowdsale Controller.*
@@ -234,7 +234,7 @@ When you have Crowdsale Controller address, initiate a contract instance and cal
 ```js
 const cc = CC.at(ccAddress)
 
-await cc.start(startTimestamp, endTimestamp, fundingAddress, { from: account })
+await cc.start(startTimestamp, endTimestamp, fundingAddress, { from: creator })
 ```
 
 **Parameters:**
@@ -249,7 +249,7 @@ await cc.start(startTimestamp, endTimestamp, fundingAddress, { from: account })
 This DAO method allows you to change project description during forecasting period.
 
 ```js
-await dao.update(infoHash, { from: account })
+await dao.update(infoHash, { from: creator })
 ```
 
 **Parameters:**
