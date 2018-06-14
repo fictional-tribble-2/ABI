@@ -210,7 +210,8 @@ await dao.createCrowdsale(minimalGoal, hardCap, prices1to4, prices5to8, { from: 
 
 *Required stage: forecasting closed*
 
-When forecasting is closed you can need to call method `createCustomCrowdsale`.
+When forecasting is closed you need to call method `createCustomCrowdsale`.  
+This step is required in order to finalise forecasting and reward wings community.
 
 ```js
 await dao.createCustomCrowdsale({ from: account })
