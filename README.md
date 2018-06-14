@@ -6,6 +6,14 @@ Manual how to use Wings contracts ABI to create and manage your project.
 
 In this manual we will be using `Node.js`, `web3` (^0.20.6) and `truffle-contract` to operate with contracts.
 
+In order to use Wings contract you need to have contracts ABI.
+Head to `./abi/` folder where you'll find the following contracts artifacts:
+ - `Wings.json`
+ - `DAO.json`
+ - `CrowdsaleController.json`
+
+Here is a small example how to initiate contract:
+
 ```js
 const contract = require('truffle-contract')
 const Web3 = require('web3')
@@ -25,7 +33,7 @@ const wings = Wings.at(wingsAddress)
 
 ### 1. Create DAO
 
-First step in project creation process is creating a DAO. DAO is a a main contract in your project hierarchy.
+First step in project creation process is creating a DAO. DAO is a main contract in your project hierarchy.
 
 To create DAO perform the following actions:
 
@@ -37,13 +45,13 @@ await wings.createDAO(name, tokenName, tokenSymbol, infoHash, customCrowdsale, {
  - `name` - string - name of your project
  - `tokenName` - string - name of project token
  - `tokenSymbol` - string - symbol of project token
- - `infoHash` - bytes32 - ipfs hash of project description
+ - `infoHash` - bytes32 - decoded ipfs hash of project description
  - `customCrowdsale` - address - address of custom crowdsale (`"0"` in case of standard crowdsale)
 
 #### Generating infoHash
 
-The infoHash is basically a decoded ipfs hash. And the ipfs hash is using the same Base58 encoding that Bitcoin uses.
-To fit the ipfs into `infoHash` we first will need to decode it.
+Ipfs hash is using the same Base58 encoding that Bitcoin uses.
+To fit ipfs hash into `infoHash` we first will need to decode it.
 
 **Example:**
 ```js
@@ -196,11 +204,15 @@ await dao.createCrowdsale(minimalGoal, hardCap, prices1to4, prices5to8, { from: 
 
 ### 9. Get address of CrowdsaleController
 
+In order to start crowdsale you'll need to find the address of Crowdsale Controller, which is the contract, created during the previous step.
+
 ```js
 const ccAddress = (await dao.crowdsaleController.call()).toString()
 ```
 
 ### 10. Start Crowdsale
+
+When you have Crowdsale Controller address, initiate a contract instance and call the method `start`.
 
 ```js
 const cc = CC.at(ccAddress)
