@@ -368,4 +368,6 @@ const delta = new Delta([
 ])
 
 console.log(JSON.stringify(JSON.stringify(delta)))
+
+// "{\"ops\":[{\"insert\":\"test\"},{\"insert\":{\"video\":\"https://www.youtube.com/embed/fy2XDBbDrAs?showinfo=0\"}}]}"
 ```
