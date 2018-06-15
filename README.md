@@ -267,7 +267,6 @@ File that contains project media has to be in JSON format.
 ```json
 {
   "version": "1.0.0",
-  "logo": "QmWWQSuPMS6aXCbZKpEjPHPUZN2NjB3YrhJTHsV4X3vb2t",
   "shortBlurb": "Decentralized blockchain dedicated to auctions in real-time",
   "story": "{\"ops\": [{\"insert\":\"test\"},{\"insert\":{\"video\":\"https://www.youtube.com/embed/fy2XDBbDrAs?showinfo=0\"}}]}",
   "category": 1,
@@ -348,15 +347,17 @@ File that contains project media has to be in JSON format.
 To better understand parameters let's prepare full list:
 
 - *version* - version of media file (means version of media file schema).
-- *logo* - ipfs hash of logo uploaded to ipfs. Only jpg/png allowed; size < 1 mb.
 - *shortBlurb* - short description of project, string. Maximum 140 characters.
 - *story* - description of project in [Delta](https://github.com/quilljs/delta) format.
 - *category* - id of category.
 - *gallery* - gallery description of project.
-- *gallery/item/type* - type of content. Options: video/image.
-- *gallery/item/content/videoId* - id of video from video hosting. Only if type is video.
-- *gallery/item/content/videoType* - type of video hosting. Options: youtube, vimeo, youku.
-- *gallery/item/content/hash* - hash of image in case of type is image.
+- *gallery/item/type* - type of content. Options: video, image, logo, terms.
+- *gallery/item/content/videoId* - video -  id of video from video hosting.
+- *gallery/item/content/videoType* - video - type of video hosting. Options: youtube, vimeo, youku.
+- *gallery/item/content/hash* - image - ipfs hash of image uploaded to ipfs.
+- *gallery/item/content/contentType* - type of image format. Options: `image/png`, `image/jpg`.
+- *gallery/item/content/file* - logo - ipfs hash of logo uploaded to ipfs. Only jpg/png allowed; size < 1 mb.
+- *gallery/item/content/file* - terms - ipfs hash of logo uploaded to ipfs. Only pdf allowed; size < 1 mb.
 
 #### How to use Delta module to generate story:
 
