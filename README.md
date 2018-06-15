@@ -351,7 +351,7 @@ To better understand parameters let's prepare full list:
 - *story* - description of project in [Delta](https://github.com/quilljs/delta) format.
 - *category* - id of category.
 - *gallery* - gallery description of project.
-- *gallery/item/type* - type of content. Options: video, image, logo, terms.
+- *gallery/type* - type of content. Options: video, image, logo, terms.
 - *gallery/video/content/videoId* -  id of video from video hosting.
 - *gallery/video/content/videoType* - type of video hosting. Options: youtube, vimeo, youku.
 - *gallery/image/content/hash* - ipfs hash of image uploaded to ipfs.
