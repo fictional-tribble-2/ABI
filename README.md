@@ -360,21 +360,21 @@ To better understand parameters let's prepare full list:
 - *gallery/terms/content/hash* - ipfs hash of terms uploaded to ipfs. Only pdf allowed; size < 1 mb.
 
 #### Categories:
-0. Other
-1. Supply chain
-2. Security
-3. Service
-4. Transportation
-5. Entertainment
-6. Education
-7. Media
-8. Retail
-9. Finance
-10. Insurance
-11. Hardware
-12. Science
-13. Utilities
-14. Charity
+ 0. Other
+ 1. Supply chain
+ 2. Security
+ 3. Service
+ 4. Transportation
+ 5. Entertainment
+ 6. Education
+ 7. Media
+ 8. Retail
+ 9. Finance
+ 10. Insurance
+ 11. Hardware
+ 12. Science
+ 13. Utilities
+ 14. Charity
 
 #### How to use Delta module to generate story:
 
