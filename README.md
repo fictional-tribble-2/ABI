@@ -265,11 +265,11 @@ await dao.update(infoHash, { from: creator })
 
 File that contains project media has to be in JSON format.
 
-*NOTE: In `story` we are using [Delta](https://github.com/quilljs/delta) format*
-
 **Example:**
 ```json
 {
+  "version": "1.0.0",
+  "logo": "QmWWQSuPMS6aXCbZKpEjPHPUZN2NjB3YrhJTHsV4X3vb2t",
   "shortBlurb": "Decentralized blockchain dedicated to auctions in real-time",
   "story": "{\"ops\": [{\"insert\":\"test\"},{\"insert\":{\"video\":\"https://www.youtube.com/embed/fy2XDBbDrAs?showinfo=0\"}}]}",
   "category": 1,
@@ -346,3 +346,16 @@ File that contains project media has to be in JSON format.
   }
 }
 ```
+
+To better understand parameters let's prepare full list:
+
+- *version* - version of media file (means version of media file schema)
+- *logo* - ipfs hash of logo uploaded to ipfs. Only jpg/png allowed; size < 1 mb.
+- *shortBlurb* - short description of project, string. Maximum 140 characters.
+- *story* - story of project in [Delta](https://github.com/quilljs/delta) format.
+- *category* - id of category.
+- *gallery* - gallery description of project.
+- *gallery/item/type* - type of content - video/image.
+- *gallery/item/content/videoId* - id of video from video hosting. Only in case of type is equal *video*.
+- *gallery/item/content/videoType* - type of video hosting, options: youtube, vimeo, youku
+- *gallery/item/content/hash* - hash of image in case of type is equal image.
