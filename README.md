@@ -347,13 +347,13 @@ File that contains project media has to be in JSON format.
 
 To better understand parameters let's prepare full list:
 
-- *version* - version of media file (means version of media file schema)
+- *version* - version of media file (means version of media file schema).
 - *logo* - ipfs hash of logo uploaded to ipfs. Only jpg/png allowed; size < 1 mb.
 - *shortBlurb* - short description of project, string. Maximum 140 characters.
-- *story* - story of project in [Delta](https://github.com/quilljs/delta) format.
+- *story* - description of project in [Delta](https://github.com/quilljs/delta) format.
 - *category* - id of category.
 - *gallery* - gallery description of project.
-- *gallery/item/type* - type of content - video/image.
-- *gallery/item/content/videoId* - id of video from video hosting. Only in case of type is equal *video*.
-- *gallery/item/content/videoType* - type of video hosting, options: youtube, vimeo, youku
-- *gallery/item/content/hash* - hash of image in case of type is equal image.
+- *gallery/item/type* - type of content. Options: video/image.
+- *gallery/item/content/videoId* - id of video from video hosting. Only if type is video.
+- *gallery/item/content/videoType* - type of video hosting. Options: youtube, vimeo, youku.
+- *gallery/item/content/hash* - hash of image in case of type is image.
