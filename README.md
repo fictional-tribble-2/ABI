@@ -268,7 +268,7 @@ File that contains project media has to be in JSON format.
 {
   "version": "1.0.0",
   "shortBlurb": "My short project description",
-  "story": "{\"ops\": [{\"insert\":\"test\"},{\"insert\":{\"video\":\"https://www.youtube.com/embed/fy2XDBbDrAs?showinfo=0\"}}]}",
+  "story": "{\"ops\": [{\"insert\":\"test\"},{\"insert\":{\"video\":\"https://www.youtube.com/embed/CXo7i_gdNR0?showinfo=0\"}}]}",
   "category": 1,
   "gallery": [
     {
@@ -281,7 +281,7 @@ File that contains project media has to be in JSON format.
     {
       "type": "video",
       "content": {
-        "videoId": "Ztn3-qhSpxo",
+        "videoId": "CXo7i_gdNR0",
         "videoType": "youtube"
       }
     },
