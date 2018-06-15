@@ -35,8 +35,6 @@ const wings = Wings.at(wingsAddress)
 
 First step in project creation process is creating a DAO. DAO is a main contract in your project hierarchy.
 
-To create DAO perform the following actions:
-
 ```js
 await wings.createDAO(name, tokenName, tokenSymbol, infoHash, customCrowdsale, { from: creator })
 ```
