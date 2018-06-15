@@ -348,7 +348,7 @@ To better understand parameters let's prepare full list:
 
 - *version* - version of media file (means version of media file schema).
 - *shortBlurb* - short description of project, string. Maximum 140 characters.
-- *story* - description of project in [Delta](https://github.com/quilljs/delta) format.
+- *story* - description of project in [Delta](https://github.com/quilljs/delta) format (see the example below).
 - *category* - id of category (see the list below).
 - *gallery* - gallery description of project.
 - *gallery/type* - type of content. Options: video, image, logo, terms.
@@ -358,6 +358,20 @@ To better understand parameters let's prepare full list:
 - *gallery/logo/content/contentType* - type of image format. Options: `image/png`, `image/jpg`.
 - *gallery/logo/content/hash* - ipfs hash of logo uploaded to ipfs. Only jpg/png allowed; size < 1 mb.
 - *gallery/terms/content/hash* - ipfs hash of terms uploaded to ipfs. Only pdf allowed; size < 1 mb.
+
+#### How to use Delta module to generate story:
+
+```js
+const Delta = require('quill-delta')
+
+const delta = new Delta([
+  { insert: 'test' },
+  { insert: { video: 'https://www.youtube.com/embed/fy2XDBbDrAs?showinfo=0' } }
+])
+
+console.log(JSON.stringify(JSON.stringify(delta)))
+// "{\"ops\":[{\"insert\":\"test\"},{\"insert\":{\"video\":\"https://www.youtube.com/embed/fy2XDBbDrAs?showinfo=0\"}}]}"
+```
 
 #### Categories:
  0. Other
@@ -375,17 +389,3 @@ To better understand parameters let's prepare full list:
  12. Science
  13. Utilities
  14. Charity
-
-#### How to use Delta module to generate story:
-
-```js
-const Delta = require('quill-delta')
-
-const delta = new Delta([
-  { insert: 'test' },
-  { insert: { video: 'https://www.youtube.com/embed/fy2XDBbDrAs?showinfo=0' } }
-])
-
-console.log(JSON.stringify(JSON.stringify(delta)))
-// "{\"ops\":[{\"insert\":\"test\"},{\"insert\":{\"video\":\"https://www.youtube.com/embed/fy2XDBbDrAs?showinfo=0\"}}]}"
-```
