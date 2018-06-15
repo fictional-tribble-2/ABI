@@ -352,12 +352,12 @@ To better understand parameters let's prepare full list:
 - *category* - id of category.
 - *gallery* - gallery description of project.
 - *gallery/item/type* - type of content. Options: video, image, logo, terms.
-- *gallery/item/content/videoId* - video -  id of video from video hosting.
-- *gallery/item/content/videoType* - video - type of video hosting. Options: youtube, vimeo, youku.
-- *gallery/item/content/hash* - image - ipfs hash of image uploaded to ipfs.
-- *gallery/item/content/contentType* - type of image format. Options: `image/png`, `image/jpg`.
-- *gallery/item/content/file* - logo - ipfs hash of logo uploaded to ipfs. Only jpg/png allowed; size < 1 mb.
-- *gallery/item/content/file* - terms - ipfs hash of logo uploaded to ipfs. Only pdf allowed; size < 1 mb.
+- *gallery/video/content/videoId* -  id of video from video hosting.
+- *gallery/video/content/videoType* - type of video hosting. Options: youtube, vimeo, youku.
+- *gallery/image/content/hash* - ipfs hash of image uploaded to ipfs.
+- *gallery/logo/content/contentType* - type of image format. Options: `image/png`, `image/jpg`.
+- *gallery/logo/content/file* - ipfs hash of logo uploaded to ipfs. Only jpg/png allowed; size < 1 mb.
+- *gallery/terms/content/file* - ipfs hash of logo uploaded to ipfs. Only pdf allowed; size < 1 mb.
 
 #### How to use Delta module to generate story:
 
