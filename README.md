@@ -275,7 +275,7 @@ File that contains project media has to be in JSON format.
       "type": "logo",
       "content": {
         "contentType": "image/png",
-        "file": "examples/assets/domRaider-logo.png"
+        "hash": "QmWWQSuPMS6aXCbZKpEjPHPUZN2NjB3YrhJTHsV4X3vb2t"
       }
     },
     {
@@ -288,7 +288,7 @@ File that contains project media has to be in JSON format.
     {
       "type": "terms",
       "content": {
-        "file": "examples/assets/my-terms.pdf"
+        "hash": "QmWWQSuPMS6aXCbZKpEjPHPUZN2NjB3YrhJTHsV4X3vb2t"
       }
     }
   ]
@@ -349,15 +349,32 @@ To better understand parameters let's prepare full list:
 - *version* - version of media file (means version of media file schema).
 - *shortBlurb* - short description of project, string. Maximum 140 characters.
 - *story* - description of project in [Delta](https://github.com/quilljs/delta) format.
-- *category* - id of category.
+- *category* - id of category (see the list below).
 - *gallery* - gallery description of project.
 - *gallery/type* - type of content. Options: video, image, logo, terms.
 - *gallery/video/content/videoId* -  id of video from video hosting.
 - *gallery/video/content/videoType* - type of video hosting. Options: youtube, vimeo, youku.
 - *gallery/image/content/hash* - ipfs hash of image uploaded to ipfs.
 - *gallery/logo/content/contentType* - type of image format. Options: `image/png`, `image/jpg`.
-- *gallery/logo/content/file* - ipfs hash of logo uploaded to ipfs. Only jpg/png allowed; size < 1 mb.
-- *gallery/terms/content/file* - ipfs hash of logo uploaded to ipfs. Only pdf allowed; size < 1 mb.
+- *gallery/logo/content/hash* - ipfs hash of logo uploaded to ipfs. Only jpg/png allowed; size < 1 mb.
+- *gallery/terms/content/hash* - ipfs hash of terms uploaded to ipfs. Only pdf allowed; size < 1 mb.
+
+**Categories:**
+0. Other
+1. Supply chain
+2. Security
+3. Service
+4. Transportation
+5. Entertainment
+6. Education
+7. Media
+8. Retail
+9. Finance
+10. Insurance
+11. Hardware
+12. Science
+13. Utilities
+14. Charity
 
 #### How to use Delta module to generate story:
 
