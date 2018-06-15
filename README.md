@@ -362,12 +362,12 @@ To better understand parameters let's prepare full list:
 
 ```js
 const Delta = require('quill-delta')
+
 const delta = new Delta([
   { insert: 'test' },
   { insert: { video: 'https://www.youtube.com/embed/fy2XDBbDrAs?showinfo=0' } }
 ])
 
 console.log(JSON.stringify(JSON.stringify(delta)))
-
 // "{\"ops\":[{\"insert\":\"test\"},{\"insert\":{\"video\":\"https://www.youtube.com/embed/fy2XDBbDrAs?showinfo=0\"}}]}"
 ```
