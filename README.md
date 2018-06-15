@@ -265,7 +265,7 @@ await dao.update(infoHash, { from: creator })
 
 File that contains project media has to be in JSON format.
 
-*NOTE: In `story` we are using [Delta](https://github.com/quilljs/delta) format which you can see in the example below.*
+*NOTE: In `story` we are using [Delta](https://github.com/quilljs/delta) format*
 
 **Example:**
 ```json
