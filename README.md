@@ -357,3 +357,15 @@ To better understand parameters let's prepare full list:
 - *gallery/item/content/videoId* - id of video from video hosting. Only if type is video.
 - *gallery/item/content/videoType* - type of video hosting. Options: youtube, vimeo, youku.
 - *gallery/item/content/hash* - hash of image in case of type is image.
+
+#### How to use Delta module to generate story:
+
+```js
+const Delta = require('quill-delta')
+const delta = new Delta([
+  { insert: 'test' },
+  { insert: { video: 'https://www.youtube.com/embed/fy2XDBbDrAs?showinfo=0' } }
+])
+
+console.log(JSON.stringify(JSON.stringify(delta)))
+```
