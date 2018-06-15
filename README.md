@@ -359,7 +359,7 @@ To better understand parameters let's prepare full list:
 - *gallery/logo/content/hash* - ipfs hash of logo uploaded to ipfs. Only jpg/png allowed; size < 1 mb.
 - *gallery/terms/content/hash* - ipfs hash of terms uploaded to ipfs. Only pdf allowed; size < 1 mb.
 
-**Categories:**
+#### Categories:
 0. Other
 1. Supply chain
 2. Security
