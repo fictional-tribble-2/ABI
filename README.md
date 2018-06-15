@@ -48,6 +48,10 @@ await wings.createDAO(name, tokenName, tokenSymbol, infoHash, customCrowdsale, {
  - `infoHash` - bytes32 - decoded ipfs hash of project description
  - `customCrowdsale` - address - address of custom crowdsale (`"0"` in case of standard crowdsale)
 
+#### Uploading your project description and media to ipfs
+
+Head to [Media file format](https://github.com/WingsDao/ABI#media-file-format) paragraph in the Appendix section.
+
 #### Generating infoHash
 
 Ipfs hash is using the same Base58 encoding that Bitcoin uses.
@@ -254,3 +258,91 @@ await dao.update(infoHash, { from: creator })
 
 **Parameters:**
  - `infoHash` - bytes32 - decoded ipfs hash of updated project description
+
+## Appendix
+
+### Media file format
+
+File that contains project media has to be in JSON format.
+
+*NOTE: In member variable `story` we are using [Delta](https://github.com/quilljs/delta) format which you can see in the example below.*
+
+**Example:**
+```json
+{
+  "shortBlurb": "Decentralized blockchain dedicated to auctions in real-time",
+  "story": "{\"ops\": [{\"insert\":\"test\"},{\"insert\":{\"video\":\"https://www.youtube.com/embed/fy2XDBbDrAs?showinfo=0\"}}]}",
+  "category": 1,
+  "gallery": [
+    {
+      "type": "logo",
+      "content": {
+        "contentType": "image/png",
+        "file": "examples/assets/domRaider-logo.png"
+      }
+    },
+    {
+      "type": "video",
+      "content": {
+        "videoId": "Ztn3-qhSpxo",
+        "videoType": "youtube"
+      }
+    },
+    {
+      "type": "terms",
+      "content": {
+        "file": "examples/assets/my-terms.pdf"
+      }
+    }
+  ]
+}
+```
+
+**Schema:**
+```json
+{
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "shortBlurb": {
+      "type": "string"
+    },
+    "story": {
+      "type": "string"
+    },
+    "category": {
+      "type": "integer"
+    },
+    "gallery": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "content": {
+            "type": "object",
+            "properties": {
+              "videoType": {
+                "type": "string"
+              },
+              "videoId": {
+                "type": "string"
+              }
+            }
+          },
+          "src": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
+```
