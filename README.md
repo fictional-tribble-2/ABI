@@ -267,7 +267,7 @@ File that contains project media has to be in JSON format.
 ```json
 {
   "version": "1.0.0",
-  "shortBlurb": "Decentralized blockchain dedicated to auctions in real-time",
+  "shortBlurb": "My short project description",
   "story": "{\"ops\": [{\"insert\":\"test\"},{\"insert\":{\"video\":\"https://www.youtube.com/embed/fy2XDBbDrAs?showinfo=0\"}}]}",
   "category": 1,
   "gallery": [
@@ -351,7 +351,7 @@ To better understand parameters let's prepare full list:
 - *story* - description of project in [Delta](https://github.com/quilljs/delta) format (see the example below).
 - *category* - id of category (see the list below).
 - *gallery* - gallery description of project.
-- *gallery/type* - type of content. Options: video, image, logo, terms.
+- _gallery/*/contentType_ - type of content. Options: video, image, logo, terms.
 - *gallery/video/content/videoId* -  id of video from video hosting.
 - *gallery/video/content/videoType* - type of video hosting. Options: youtube, vimeo, youku.
 - *gallery/image/content/hash* - ipfs hash of image uploaded to ipfs.
