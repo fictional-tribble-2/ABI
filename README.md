@@ -286,6 +286,13 @@ File that contains project media has to be in JSON format.
       }
     },
     {
+      "type": "image",
+      "content": {
+        "contentType": "image/jpeg",
+        "hash": "0x38134191b4b59736d5174cdd0846bb8bafdf01fbfe013ead08ca133f13e23e59"
+      }
+    },
+    {
       "type": "terms",
       "content": {
         "hash": "QmWWQSuPMS6aXCbZKpEjPHPUZN2NjB3YrhJTHsV4X3vb2t"
@@ -296,7 +303,7 @@ File that contains project media has to be in JSON format.
 ```
 
 **Schema:**
-```json
+```js
 {
   "$id": "http://example.com/example.json",
   "type": "object",
@@ -330,6 +337,7 @@ File that contains project media has to be in JSON format.
             "$id": "/properties/gallery/items/properties/type",
             "type": "string"
           },
+          // "type:" "logo"
           "content": {
             "$id": "/properties/gallery/items/properties/content",
             "type": "object",
@@ -338,6 +346,47 @@ File that contains project media has to be in JSON format.
                 "$id": "/properties/gallery/items/properties/content/properties/contentType",
                 "type": "string"
               },
+              "hash": {
+                "$id": "/properties/gallery/items/properties/content/properties/hash",
+                "type": "string"
+              }
+            }
+          }
+          // "type:" "video"
+          "content": {
+            "$id": "/properties/gallery/items/properties/content",
+            "type": "object",
+            "properties": {
+              "videoId": {
+                "$id": "/properties/gallery/items/properties/content/properties/videoId",
+                "type": "string"
+              },
+              "videoType": {
+                "$id": "/properties/gallery/items/properties/content/properties/videoType",
+                "type": "string"
+              }
+            }
+          }
+          // "type:" "image"
+          "content": {
+            "$id": "/properties/gallery/items/properties/content",
+            "type": "object",
+            "properties": {
+              "contentType": {
+                "$id": "/properties/gallery/items/properties/content/properties/contentType",
+                "type": "string"
+              },
+              "hash": {
+                "$id": "/properties/gallery/items/properties/content/properties/hash",
+                "type": "string"
+              }
+            }
+          }
+          // "type:" "terms"
+          "content": {
+            "$id": "/properties/gallery/items/properties/content",
+            "type": "object",
+            "properties": {
               "hash": {
                 "$id": "/properties/gallery/items/properties/content/properties/hash",
                 "type": "string"
