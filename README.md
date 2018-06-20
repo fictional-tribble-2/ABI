@@ -304,38 +304,45 @@ File that contains project media has to be in JSON format.
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
     "version": {
+      "$id": "/properties/version",
       "type": "string"
     },
     "shortBlurb": {
+      "$id": "/properties/shortBlurb",
       "type": "string"
     },
     "story": {
+      "$id": "/properties/story",
       "type": "string"
     },
     "category": {
+      "$id": "/properties/category",
       "type": "integer"
     },
     "gallery": {
+      "$id": "/properties/gallery",
       "type": "array",
       "items": {
+        "$id": "/properties/gallery/items",
         "type": "object",
         "properties": {
           "type": {
+            "$id": "/properties/gallery/items/properties/type",
             "type": "string"
           },
           "content": {
+            "$id": "/properties/gallery/items/properties/content",
             "type": "object",
             "properties": {
-              "videoType": {
+              "contentType": {
+                "$id": "/properties/gallery/items/properties/content/properties/contentType",
                 "type": "string"
               },
-              "videoId": {
+              "hash": {
+                "$id": "/properties/gallery/items/properties/content/properties/hash",
                 "type": "string"
               }
             }
-          },
-          "src": {
-            "type": "string"
           }
         }
       }
