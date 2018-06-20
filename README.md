@@ -349,7 +349,7 @@ To better understand parameters let's prepare full list:
 - *version* - version of media file (means version of media file schema).
 - *shortBlurb* - short description of project, string. Maximum 140 characters.
 - *story* - description of project in [Delta](https://github.com/quilljs/delta) format (see the example below).
-- *category* - id of category (see the list below).
+- *category* - id of category (see Categories below).
 - *gallery* - gallery description of project.
 - _gallery/*/contentType_ - type of content. Options: video, image, logo, terms.
 - *gallery/video/content/videoId* -  id of video from video hosting.
@@ -374,18 +374,5 @@ console.log(JSON.stringify(JSON.stringify(delta)))
 ```
 
 #### Categories:
- 0. Other
- 1. Supply chain
- 2. Security
- 3. Service
- 4. Transportation
- 5. Entertainment
- 6. Education
- 7. Media
- 8. Retail
- 9. Finance
- 10. Insurance
- 11. Hardware
- 12. Science
- 13. Utilities
- 14. Charity
+
+To get up-to-date list of categories use our [public API](https://apidocs.wings.ai/#/categories/get_dictionary_categories).
