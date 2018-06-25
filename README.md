@@ -73,7 +73,7 @@ await wings.createDAO(name, tokenName, tokenSymbol, infoHash, customCrowdsale, {
 
 Head to [Media file format](https://github.com/WingsDao/ABI#media-file-format) paragraph in the Appendix section.
 
-**Important:** Ipfs file can contain malicious code that mean that everyone developing and using this data must sanitize it.*
+**Warning:** Ipfs file can contain malicious code that mean that everyone developing and using this data must sanitize it.*
 
 #### Generating infoHash
 
