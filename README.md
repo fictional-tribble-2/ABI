@@ -35,6 +35,8 @@ const wings = Wings.at(wingsAddress)
 
 First step in project creation process is creating a DAO. DAO is a main contract in your project hierarchy.
 
+#### approve
+
 First of all you have to have enough wings on your account for wings deposit (we will refer to your account as `creator` in this step by step tutorial).
 
 When you have enough wings on your account balance, call method `approve` on wings `Token` contract to give the `Wings` contract ability to transfer deposit.
@@ -51,6 +53,8 @@ await wingsToken.approve(wingsAddress, wingsDeposit, { from: creator })
 **Parameters:**
  - `wingsAddress` - address of `Wings` contract (can be found above)
  - `wingsDeposit` - amount of wings to be locked in order to create project. Currently is 5000 Wings.
+
+#### createDAO
 
 After successful approval, call the method `createDAO` on `Wings` contract instance.
 
