@@ -75,7 +75,7 @@ Head to [Media file format](https://github.com/WingsDao/ABI#media-file-format) p
 
 ---
 
-**Warning:** Ipfs file can contain malicious code that mean that everyone developing and using this data must sanitize it.*
+**Warning:** Ipfs file can contain malicious code which means that everyone developing and using this data must sanitize it.
 
 ---
 
