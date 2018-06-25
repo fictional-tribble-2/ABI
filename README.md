@@ -196,6 +196,8 @@ After forecasting period you can close forecasting. This will automatically chec
 await dao.closeForecasting({ from: creator })
 ```
 
+## Note that after forecasting end you will have 45 days to start your crowdsale.
+
 ## In case you are using Custom Crowdsale, skip step 7 and head to the step 8.1.
 
 ### 7. Create token
