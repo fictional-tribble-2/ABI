@@ -50,4 +50,7 @@ contract IDAO {
 
     // Update project media asset
     function update(bytes32 _infoHash) public;
+
+    // Stops the DAO
+    function stop() public;
 }

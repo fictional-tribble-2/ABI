@@ -24,7 +24,7 @@ const Wings = contract.at(wingsArtifact)
 
 Wings.setProvider(new Web3.providers.HttpProvider(web3Provider))
 
-const wingsAddress = '0x7ea8dc2b2b00b596d077b68f5c891e03797a5eb2'
+const wingsAddress = '0x7ea8dc2b2b00b596d077b68f5c891e03797a5eb2' // mainnet Wings contract address
 
 const wings = Wings.at(wingsAddress)
 ```
@@ -34,6 +34,25 @@ const wings = Wings.at(wingsAddress)
 ### 1. Create DAO
 
 First step in project creation process is creating a DAO. DAO is a main contract in your project hierarchy.
+
+First of all you have to have enough wings on your account for wings deposit (we will refer to your account as `creator` in this step by step tutorial).
+
+When you have enough wings on your account balance, call method `approve` on wings `Token` contract to give the `Wings` contract ability to transfer deposit.
+
+```js
+const wingsTokenAddress = '0x667088b212ce3d06a1b553a7221E1fD19000d9aF' // mainnet wings Token contract address
+// https://etherscan.io/token/0x667088b212ce3d06a1b553a7221E1fD19000d9aF
+
+const wingsToken = Token.at(wingsTokenAddress)
+
+await wingsToken.approve(wingsAddress, wingsDeposit, { from: creator })
+```
+
+**Parameters:**
+ - `wingsAddress` - address of `Wings` contract (can be found above)
+ - `wingsDeposit` - amount of wings to be locked in order to create project. Currently is 5000 Wings.
+
+After successful approval, call the method `createDAO` on `Wings` contract instance.
 
 ```js
 await wings.createDAO(name, tokenName, tokenSymbol, infoHash, customCrowdsale, { from: creator })
@@ -256,6 +275,16 @@ await dao.update(infoHash, { from: creator })
 
 **Parameters:**
  - `infoHash` - bytes32 - decoded ipfs hash of updated project description
+
+### stop
+
+This DAO method stops the DAO in any state.
+
+```js
+await dao.stop({ from: creator })
+```
+
+In case of the stop the `wingsDeposit` will be returned only if forecasting hasn't started.
 
 ## Appendix
 
