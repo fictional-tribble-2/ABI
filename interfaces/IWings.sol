@@ -8,4 +8,7 @@ contract Wings {
 
     // Get DAO by Id
     function getDAOById(bytes32 _daoId) public view returns (address);
+
+    // Add forecaster to DAO by dao id
+    function addForecasterToDAO(bytes32 _daoId) public;
 }

@@ -13,7 +13,10 @@ const token = Token.at('0x667088b212ce3d06a1b553a7221E1fD19000d9aF') // mainnet 
 const userStorage = UserStorage.at('0x94B2F026A75BE2556C78A6D1f573bD79Fdfb1962') // mainnet wings User Storage contract address
 // https://etherscan.io/address/0x94b2f026a75be2556c78a6d1f573bd79fdfb1962
 
-const dao = DAO.at('0xd6635f49a306b015c55bd1ff878e2c2c8413f247') // this is example, not the real address
+const wings = Wings.at('0x7ea8dc2b2b00b596d077b68f5c891e03797a5eb2') // mainnet Wings contract address
+// https://etherscan.io/address/0x7ea8dc2b2b00b596d077b68f5c891e03797a5eb2
+
+const dao = DAO.at('0xd6635f49a306b015c55bd1ff878e2c2c8413f247') // this is an example, not the real address
 // To get DAO address head to the project on wings.ai which you would like to forecast and get the address from the url:
 // https://www.wings.ai/project/0xd6635f49a306b015c55bd1ff878e2c2c8413f247
 // 0xd6635f49a306b015c55bd1ff878e2c2c8413f247 <-- is DAO address
@@ -62,7 +65,7 @@ When making new forecast the first step is to add your account address to DAO.
 ```js
 const daoId = (await dao.id.call()).toString()
 
-await userStorage.addForecasterToDAO(daoId, {
+await wings.addForecasterToDAO(daoId, {
   from: forecaster
 })
 ```
