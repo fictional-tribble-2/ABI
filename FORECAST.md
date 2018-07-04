@@ -102,3 +102,43 @@ await forecasting.addForecast(
 **Parameters:**
  - `forecast` - forecasted amount
  - `messageHash` - ipfs hash of message (message is a buffered string)
+
+---
+
+# Additional methods
+
+#### Change forecast
+
+When your forecast is already placed you can change/update it.
+
+```js
+await forecasting.changeForecast(
+  forecast,
+  messageHash,
+  {
+    from: forecaster
+  }
+)
+```
+
+**Parameters:**
+ - `forecast` - forecasted amount
+ - `messageHash` - ipfs hash of message (message is a buffered string)
+
+#### Close/Cancel forecast
+
+Depending on the stage of the forecasting you can either close or cancel forecast.
+
+You can **close** forecast in following scenarios:
+ - project was stopped by owner;
+ - project was rejected by community;
+ - crowdsale deadline missed;
+ - after crowdsale period;
+
+You can **cancel** forecast from the beginning of the forecasting and to the end of crowdsale period.
+
+*NOTE: `closeForecast` is capable of performing both actions, hence it will automatically identify which one to perform depending on the current state of forecasting*
+
+```js
+await forecasting.closeForecast({ from: forecaster })
+```
