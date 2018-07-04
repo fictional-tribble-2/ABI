@@ -4,7 +4,22 @@ Manual how to use Wings contracts ABI to make forecast.
 
 ## Introduction
 
-Prepare contracts interfaces as follows:
+In this manual we will be using `Node.js`, `web3` (^0.20.6) and `truffle-contract` to operate with contracts.
+
+Here is an example how to initialise contract interface:
+
+```js
+const contract = require('truffle-contract')
+const Web3 = require('web3')
+
+const wingsArtifact = require('./abi/Wings.json')
+
+const Wings = contract.at(wingsArtifact)
+
+Wings.setProvider(new Web3.providers.HttpProvider(web3Provider))
+```
+
+Prepare contracts instances as follows:
 
 ```js
 const token = Token.at('0x667088b212ce3d06a1b553a7221E1fD19000d9aF') // mainnet wings Token contract address
