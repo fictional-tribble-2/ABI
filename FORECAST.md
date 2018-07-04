@@ -1,4 +1,4 @@
-# Wings Forecaster ABI
+# Wings Forecast ABI
 
 Manual how to use Wings contracts ABI to make forecast.
 
@@ -6,7 +6,7 @@ Manual how to use Wings contracts ABI to make forecast.
 
 In this manual we will be using `Node.js`, `web3` (^0.20.6) and `truffle-contract` to operate with contracts.
 
-Here is an example how to initialise contract interface:
+Here is an example how to initiate contract interface:
 
 ```js
 const contract = require('truffle-contract')
@@ -43,7 +43,7 @@ const forecasting = Forecasting.at(forecastingAddress)
 
 # Step by step
 
-This step by step tutorial will walk through from the beggining, assyming you already have wings tokens, but didn't reserve any of them.
+This step by step tutorial will walkthrough from the beginning, assuming you already have wings tokens, but didn't reserve or lock any of them.
 We will refer to forecaster address as `forecaster`.
 
 #### 1. Approve wings amount to reserve
