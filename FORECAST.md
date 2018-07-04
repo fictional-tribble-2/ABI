@@ -1,0 +1,86 @@
+# Wings Forecaster ABI
+
+Manual how to use Wings contracts ABI to make forecast.
+
+## Introduction
+
+Prepare contracts interfaces as follows:
+
+```js
+const token = Token.at('0x667088b212ce3d06a1b553a7221E1fD19000d9aF') // mainnet wings Token contract address
+// https://etherscan.io/token/0x667088b212ce3d06a1b553a7221E1fD19000d9aF
+
+const userStorage = UserStorage.at('0x94B2F026A75BE2556C78A6D1f573bD79Fdfb1962') // mainnet wings User Storage contract address
+// https://etherscan.io/address/0x94b2f026a75be2556c78a6d1f573bd79fdfb1962
+
+const dao = DAO.at('0xd6635f49a306b015c55bd1ff878e2c2c8413f247') // this is example, not the real address
+// To get DAO address head to the project on wings.ai which you would like to forecast and get the address from the url:
+// https://www.wings.ai/project/0xd6635f49a306b015c55bd1ff878e2c2c8413f247
+// 0xd6635f49a306b015c55bd1ff878e2c2c8413f247 <-- is DAO address
+
+const forecastingAddress = (await dao.forecasting.call()).toString()
+
+const forecasting = Forecasting.at(forecastingAddress)
+```
+
+# Step by step
+
+This step by step tutorial will walk through from the beggining, assyming you already have wings tokens, but didn't reserve any of them.
+We will refer to forecaster address as `forecaster`.
+
+#### 1. Approve wings amount to reserve
+
+In order to reserve wings give User Storage permission to transfer wings.
+
+```js
+await token.approve(userStorage.address, amount, {
+  from: forecaster
+})
+```
+
+**Parameters:**
+ - `amount` - amount of wings tokens to reserve
+
+
+#### 2. Reserve wings
+
+After the approval, you can reserve wings. Reserved wings will become locked wings after you'll make a forecast.
+
+```js
+await userStorage.reserveWings(
+  amount,
+  {
+    from: forecaster
+  }
+)
+```
+
+#### 3. Add account address to DAO
+
+When making new forecast the first step is to add your account address to DAO.
+
+```js
+const daoId = (await dao.id.call()).toString()
+
+await userStorage.addForecasterToDAO(daoId, {
+  from: forecaster
+})
+```
+
+#### 4. Place forecast
+
+After your account address was added to DAO you can place your forecast.
+
+```js
+await forecasting.addForecast(
+  forecast,
+  messageHash,
+  {
+    from: forecaster
+  }
+)
+```
+
+**Parameters:**
+ - `forecast` - forecasted amount
+ - `messageHash` - ipfs hash of message (message is a buffered string)
