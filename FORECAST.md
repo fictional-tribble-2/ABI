@@ -57,7 +57,7 @@ await token.approve(userStorage.address, amount, {
 ```
 
 **Parameters:**
- - `amount` - amount of wings tokens to reserve
+ - `amount` - uint256 - amount of wings tokens to reserve
 
 
 #### 2. Reserve wings
@@ -100,8 +100,8 @@ await forecasting.addForecast(
 ```
 
 **Parameters:**
- - `forecast` - forecasted amount
- - `messageHash` - ipfs hash of message (message is a buffered string)
+ - `forecast` - uint256 - forecasted amount
+ - `messageHash` - bytes32 - ipfs hash of message (message is a buffered string)
 
 ---
 
@@ -122,8 +122,8 @@ await forecasting.changeForecast(
 ```
 
 **Parameters:**
- - `forecast` - forecasted amount
- - `messageHash` - ipfs hash of message (message is a buffered string)
+ - `forecast` - uint256 - forecasted amount
+ - `messageHash` - bytes32 - ipfs hash of message (message is a buffered string)
 
 #### Close/Cancel forecast
 
