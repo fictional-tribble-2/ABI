@@ -118,7 +118,7 @@ await forecasting.addForecast(
 
 ---
 
-# Additional methods
+## Additional methods
 
 #### Change forecast
 
