@@ -25,7 +25,7 @@ const Web3 = require('web3')
 
 const wingsArtifact = require('./abi/Wings.json')
 
-const Wings = contract.at(wingsArtifact)
+const Wings = contract(wingsArtifact)
 
 Wings.setProvider(new Web3.providers.HttpProvider(web3Provider))
 ```
