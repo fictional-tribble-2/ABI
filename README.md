@@ -365,8 +365,131 @@ await dao.createCrowdsale(minimalGoal, hardCap, prices1to4, prices5to8, { from: 
 **Parameters:**
  - `minimalGoal` - uint256 - soft cap of crowdsale (in Wei)
  - `hardCap` - uint256 - hard cap of crowdsale (in Wei)
- - `prices1to4` - uint256 -
- - `prices5to8` - uint256 -
+ - `prices1to4` - uint256 - packed prices
+ - `prices5to8` - uint256 - packed prices
+
+#### Calculate and pack prices
+
+You can create up to 7 price periods, which will be packed into two uint256 values.
+
+`prices` is an array of price bonus objects.
+
+```ts
+interface PriceBonus {
+  price: number
+  durationDays: string
+  durationHours: string
+  durationMinutes: string
+  duration: any
+  isEdit: boolean
+  errorText: string,
+  durationErrorText: string
+}
+```
+
+You will need to install and include module `bignumber.js@4.0.4`.
+
+Here is a script with simple example of `prices` array:
+
+*NOTE: PriceBonus objects start from the start of the array, hence PriceBonus.price must be decreasing while array index increases.*
+
+```js
+/*
+  Here are variables which you need to prepare:
+*/
+
+// PriceBonus[]
+const prices = [{
+  price: '50', // means 50% bonus
+  durationDays: '5',
+  durationHours: '0', // 0-23
+  durationMinutes: '0', // 0-59
+  duration: '',
+  isEdit: false,
+  errorText: '',
+  durationErrorText: ''
+}]
+
+// Amount of integer tokens per ETH
+const tokenPrice = 100
+
+/*----------------------------------- script -----------------------------------*/
+const convertPrices = async (prices, tokenPrice) => {
+  let result
+
+  const priceChanges = [] // PriceChange[]
+  for(const price of prices) {
+    const value = new BigNumber(new BigNumber(price.price).mul(tokenPrice).div(100).plus(tokenPrice).toFixed(0))
+    priceChanges.push({
+      price: value,
+      duration: bonusDurationToSeconds(price)
+    })
+  }
+
+  const lastPrice = { // PriceChange
+    price: new BigNumber(tokenPrice),
+    duration: 1
+  }
+
+  priceChanges.push(lastPrice)
+
+  result = await packPrices(priceChanges)
+  return result
+}
+
+const bonusDurationToSeconds = (priceBonus) => {
+  return parseInt(priceBonus.durationDays) * 86400 + parseInt(priceBonus.durationHours) * 3600 + parseInt(priceBonus.durationMinutes) * 60
+}
+
+const packPrices = async (changes) => {
+  const len = changes.length
+
+  if (len > 8) {
+    throw new Error('Price changes cant contain more then 8 items')
+  }
+
+  const results = [new BigNumber(0), new BigNumber(0)]
+  let i
+
+  if (len > 0) {
+    for (i = 3; i >= 0; --i) {
+      if (i >= len) continue
+      results[0] = results[0].shift(14).add(packSingle(changes[i]))
+    }
+  }
+
+  if (len > 4) {
+    for (i = 7; i >= 4; --i) {
+      if (i >= len) continue
+      results[1] = results[1].shift(14).add(packSingle(changes[i]))
+    }
+  }
+
+  return results
+}
+
+const packSingle = (change) => {
+  const PACK_MAX = 10000000
+
+  if (change.price.lessThanOrEqualTo(0) || change.price.greaterThanOrEqualTo(PACK_MAX)) {
+    throw new Error(`Price out of range: ${change.price.toString(10)}`)
+  }
+
+  if (change.duration <= 0 || change.duration >= PACK_MAX) {
+    throw new Error(`Duration out of range: ${change.duration}`)
+  }
+
+  return new BigNumber(change.duration).shift(7).add(change.price)
+}
+/*----------------------------------- script -----------------------------------*/
+
+// We launch our script here
+convertPrices(prices, tokenPrice).then((result) => {
+  // Here are two variables which you'll need to pass as arguments to `createCrowdale` method (either BigNumber or string)
+  let prices1to4 = result[0].toString(10)
+  let prices5to8 = result[1].toString(10)
+})
+```
 
 ### 8.1. Create Custom Crowdsale
 
