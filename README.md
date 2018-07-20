@@ -1,18 +1,23 @@
 # Wings ABI
 
-Manual how to use Wings contracts ABI to create and manage your project.
+Manual how to use Wings contracts ABI.
 
-## Introduction
+## Table of contents
+
+ - [Introduction](https://github.com/wingsdao/ABI#introduction)
+ - [Making a forecast](https://github.com/wingsdao/ABI#making-a-forecast)
+ - [Creating and managing DAO](https://github.com/wingsdao/ABI#creating-and-managing-dao)
+
+---
+
+# Introduction
 
 In this manual we will be using `Node.js`, `web3` (^0.20.6) and `truffle-contract` to operate with contracts.
 
 In order to use Wings contracts you need to have contracts ABI.  
-In the `./abi` folder you can find the following contracts artifacts:
- - `Wings.json`
- - `DAO.json`
- - `CrowdsaleController.json`
+You can find all ABI files in the `./abi` folder of this repository.
 
-Here is an example of how to initiate `Wings` contract:
+Here is an example how to initiate contract interface:
 
 ```js
 const contract = require('truffle-contract')
@@ -23,21 +28,145 @@ const wingsArtifact = require('./abi/Wings.json')
 const Wings = contract(wingsArtifact)
 
 Wings.setProvider(new Web3.providers.HttpProvider(web3Provider))
-
-const wingsAddress = '0x7ea8dc2b2b00b596d077b68f5c891e03797a5eb2' // mainnet Wings contract address
-
-const wings = Wings.at(wingsAddress)
 ```
 
-# Step by step
+Below is an example of initiating contract instance (and addresses of main Wings contracts):
+
+```js
+const token = Token.at('0x667088b212ce3d06a1b553a7221E1fD19000d9aF') // mainnet wings Token contract address
+// https://etherscan.io/token/0x667088b212ce3d06a1b553a7221E1fD19000d9aF
+
+const userStorage = UserStorage.at('0x94B2F026A75BE2556C78A6D1f573bD79Fdfb1962') // mainnet wings User Storage contract address
+// https://etherscan.io/address/0x94b2f026a75be2556c78a6d1f573bd79fdfb1962
+
+const wings = Wings.at('0x7ea8dc2b2b00b596d077b68f5c891e03797a5eb2') // mainnet Wings contract address
+// https://etherscan.io/address/0x7ea8dc2b2b00b596d077b68f5c891e03797a5eb2
+
+const dao = DAO.at('0xd6635f49a306b015c55bd1ff878e2c2c8413f247') // this is an example, not the real address
+// To get DAO address head to the project on wings.ai which you would like to forecast and get the address from the url:
+// https://www.wings.ai/project/0xd6635f49a306b015c55bd1ff878e2c2c8413f247
+// 0xd6635f49a306b015c55bd1ff878e2c2c8413f247 <-- is DAO address
+
+const forecastingAddress = (await dao.forecasting.call()).toString()
+
+const forecasting = Forecasting.at(forecastingAddress)
+```
+
+---
+
+# Making a forecast
+
+This step by step tutorial will walkthrough from the beginning, assuming you already have wings tokens, but didn't reserve or lock any of them.
+We will refer to forecaster address as `forecaster`.
+
+#### 1. Approve wings amount to reserve
+
+In order to reserve wings give User Storage permission to transfer wings.
+
+```js
+await token.approve(userStorage.address, amount, {
+  from: forecaster
+})
+```
+
+**Parameters:**
+ - `amount` - uint256 - amount of wings tokens to reserve
+
+
+#### 2. Reserve wings
+
+After the approval, you can reserve wings. Reserved wings will become locked wings after you'll make a forecast.
+
+```js
+await userStorage.reserveWings(
+  amount,
+  {
+    from: forecaster
+  }
+)
+```
+
+#### 3. Add account address to DAO
+
+When making new forecast the first step is to add your account address to DAO.
+
+```js
+const daoId = (await dao.id.call()).toString()
+
+await wings.addForecasterToDAO(daoId, {
+  from: forecaster
+})
+```
+
+#### 4. Place forecast
+
+After your account address was added to DAO you can place your forecast.
+
+```js
+await forecasting.addForecast(
+  forecast,
+  messageHash,
+  {
+    from: forecaster
+  }
+)
+```
+
+**Parameters:**
+ - `forecast` - uint256 - forecasted amount
+ - `messageHash` - bytes32 - ipfs hash of message (message is a buffered string)
+
+---
+
+## Additional methods
+
+#### Change forecast
+
+When your forecast is already placed you can change/update it.
+
+```js
+await forecasting.changeForecast(
+  forecast,
+  messageHash,
+  {
+    from: forecaster
+  }
+)
+```
+
+**Parameters:**
+ - `forecast` - uint256 - forecasted amount
+ - `messageHash` - bytes32 - ipfs hash of message (message is a buffered string)
+
+#### Close/Cancel forecast
+
+Depending on the stage of the forecasting you can either close or cancel forecast.
+
+You can **close** forecast in following scenarios:
+ - project was stopped by owner;
+ - project was rejected by community;
+ - crowdsale deadline missed;
+ - after crowdsale period;
+
+You can **cancel** forecast from the beginning of the forecasting and to the end of crowdsale period.
+
+*NOTE: `closeForecast` is capable of performing both actions, hence it will automatically identify which one to perform depending on the current state of forecasting*
+
+```js
+await forecasting.closeForecast({ from: forecaster })
+```
+
+---
+
+# Creating and managing DAO
+
+First of all you have to have enough wings on your account for wings deposit (we will refer to your account as `creator` in this step by step tutorial).
 
 ### 1. Create DAO
 
 First step in project creation process is creating a DAO. DAO is a main contract in your project hierarchy.
 
 #### approve
-
-First of all you have to have enough wings on your account for wings deposit (we will refer to your account as `creator` in this step by step tutorial).
 
 When you have enough wings on your account balance, call method `approve` on wings `Token` contract to give the `Wings` contract ability to transfer deposit.
 
@@ -236,8 +365,131 @@ await dao.createCrowdsale(minimalGoal, hardCap, prices1to4, prices5to8, { from: 
 **Parameters:**
  - `minimalGoal` - uint256 - soft cap of crowdsale (in Wei)
  - `hardCap` - uint256 - hard cap of crowdsale (in Wei)
- - `prices1to4` - uint256 -
- - `prices5to8` - uint256 -
+ - `prices1to4` - uint256 - packed prices
+ - `prices5to8` - uint256 - packed prices
+
+#### Calculate and pack prices
+
+You can create up to 7 price periods, which will be packed into two uint256 values.
+
+`prices` is an array of price bonus objects.
+
+```ts
+interface PriceBonus {
+  price: number
+  durationDays: string
+  durationHours: string
+  durationMinutes: string
+  duration: any
+  isEdit: boolean
+  errorText: string,
+  durationErrorText: string
+}
+```
+
+You will need to install and include module `bignumber.js@4.0.4`.
+
+Here is a script with simple example of `prices` array:
+
+*NOTE: PriceBonus objects start from the start of the array, hence PriceBonus.price must be decreasing while array index increases.*
+
+```js
+/*
+  Here are variables which you need to prepare:
+*/
+
+// PriceBonus[]
+const prices = [{
+  price: '50', // means 50% bonus
+  durationDays: '5',
+  durationHours: '0', // 0-23
+  durationMinutes: '0', // 0-59
+  duration: '',
+  isEdit: false,
+  errorText: '',
+  durationErrorText: ''
+}]
+
+// Amount of integer tokens per ETH
+const tokenPrice = 100
+
+/*----------------------------------- script -----------------------------------*/
+const convertPrices = async (prices, tokenPrice) => {
+  let result
+
+  const priceChanges = [] // PriceChange[]
+  for(const price of prices) {
+    const value = new BigNumber(new BigNumber(price.price).mul(tokenPrice).div(100).plus(tokenPrice).toFixed(0))
+    priceChanges.push({
+      price: value,
+      duration: bonusDurationToSeconds(price)
+    })
+  }
+
+  const lastPrice = { // PriceChange
+    price: new BigNumber(tokenPrice),
+    duration: 1
+  }
+
+  priceChanges.push(lastPrice)
+
+  result = await packPrices(priceChanges)
+  return result
+}
+
+const bonusDurationToSeconds = (priceBonus) => {
+  return parseInt(priceBonus.durationDays) * 86400 + parseInt(priceBonus.durationHours) * 3600 + parseInt(priceBonus.durationMinutes) * 60
+}
+
+const packPrices = async (changes) => {
+  const len = changes.length
+
+  if (len > 8) {
+    throw new Error('Price changes cant contain more then 8 items')
+  }
+
+  const results = [new BigNumber(0), new BigNumber(0)]
+  let i
+
+  if (len > 0) {
+    for (i = 3; i >= 0; --i) {
+      if (i >= len) continue
+      results[0] = results[0].shift(14).add(packSingle(changes[i]))
+    }
+  }
+
+  if (len > 4) {
+    for (i = 7; i >= 4; --i) {
+      if (i >= len) continue
+      results[1] = results[1].shift(14).add(packSingle(changes[i]))
+    }
+  }
+
+  return results
+}
+
+const packSingle = (change) => {
+  const PACK_MAX = 10000000
+
+  if (change.price.lessThanOrEqualTo(0) || change.price.greaterThanOrEqualTo(PACK_MAX)) {
+    throw new Error(`Price out of range: ${change.price.toString(10)}`)
+  }
+
+  if (change.duration <= 0 || change.duration >= PACK_MAX) {
+    throw new Error(`Duration out of range: ${change.duration}`)
+  }
+
+  return new BigNumber(change.duration).shift(7).add(change.price)
+}
+/*----------------------------------- script -----------------------------------*/
+
+// We launch our script here
+convertPrices(prices, tokenPrice).then((result) => {
+  // Here are two variables which you'll need to pass as arguments to `createCrowdale` method (either BigNumber or string)
+  let prices1to4 = result[0].toString(10)
+  let prices5to8 = result[1].toString(10)
+})
+```
 
 ### 8.1. Create Custom Crowdsale
 

@@ -6,6 +6,7 @@ contract IDAO {
     // Information about the project
     function name() public view returns (string);
     function infoHash() public view returns (bytes32);
+    function id() public view returns (bytes32);
 
     // Information about project token
     function tokenName() public view returns (string);

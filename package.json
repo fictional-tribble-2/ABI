@@ -1,0 +1,23 @@
+{
+  "name": "ABI",
+  "version": "1.0.0",
+  "description": "Manual how to use Wings contracts ABI.",
+  "main": "prices.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wingsdao/ABI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wingsdao/ABI/issues"
+  },
+  "homepage": "https://github.com/wingsdao/ABI#readme",
+  "dependencies": {
+    "bignumber.js": "^4.0.4"
+  }
+}
