@@ -52,7 +52,7 @@ await wingsToken.approve(wingsAddress, wingsDeposit, { from: creator })
 
 **Parameters:**
  - `wingsAddress` - address of `Wings` contract (can be found above)
- - `wingsDeposit` - amount of wings to be locked in order to create project. Currently is 5000 Wings.
+ - `wingsDeposit` - amount of wings to be locked in order to create project. Currently is 200 Wings.
 
 #### createDAO
 
