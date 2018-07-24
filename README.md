@@ -72,7 +72,11 @@ Currently there are two supported types of integration:
 
 *NOTE: Before you create DAO you should already have your crowdsale integrated and deployed.*
 
+---
+
 **Important:** Integration is responsible step and in case of having any doubts or questions please contact Wings team for help.
+
+---
 
 #### approve
 
