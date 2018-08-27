@@ -175,12 +175,11 @@ await dao.createForecasting(forecastingDurationInHours, ethRewardPart, tokenRewa
 
 **Parameters:**
  - `forecastingDurationInHours` - uint256 - duration of forecasting in hours (from 120 to 360 hours)
- - `ethRewardPart` - uint256 - reward percent of total collected Ether
- - `tokenRewardPart` - uint256 - reward percent of total sold tokens
 
-*NOTE: reward percent must be multiplied by 10000.*
-
-*Example: reward is 1.5% the argument must be passed as 15000.*
+**Notes:**
+ - reward percent must be multiplied by 10000 (*Example: reward is 1.5% the argument must be passed as 15000*)
+ - reward part must be less then 1000000 (100% * 10000)
+ - `tokenRewardPart` must be greater than zero
 
 ### 5. Start Forecasting
 
@@ -439,7 +438,33 @@ await cc.start(startTimestamp, endTimestamp, fundingAddress, { from: creator })
  - `endTimestamp` - uint256 - unix timestamp of the end of crowdsale period
  - `fundingAddress` - address - address of account, which will receive funds, collected during crowdsale period
 
+### 11. Finish crowdsale (prepare to give rewards)
+
+To finish crowdsale and prepare to give rewards make the following call.
+
+```js
+await cc.closeForecasting({ from: creator })
+```
+
 ## Additional functions
+
+### setRewardParts
+
+This DAO method allows you to set/change rewards percent.
+
+```js
+await dao.setRewardsParts(ethRewardPart, tokenRewardPart, { from: creator })
+```
+
+**Parameters:**
+ - `ethRewardPart` - uint256 - reward percent of total collected Ether
+ - `tokenRewardPart` - uint256 - reward percent of total sold tokens
+
+**Notes:**
+ - reward percent must be multiplied by 10000 (*Example: reward is 1.5% the argument must be passed as 15000*)
+ - reward part must be less then 1000000 (100% * 10000)
+ - `tokenRewardPart` must be greater than zero
+ - if you are changing reward parts the new parts must be greater or equal to the old parts
 
 ### update
 
