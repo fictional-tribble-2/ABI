@@ -446,6 +446,10 @@ To finish crowdsale and prepare to give rewards make the following call.
 await cc.closeForecasting({ from: creator })
 ```
 
+**Notes:**
+ - requires crowdsale to be either in failed or successful state
+ - can be called by any user
+
 ## Additional functions
 
 ### setRewardParts
