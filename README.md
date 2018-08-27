@@ -5,8 +5,8 @@ Manual how to use Wings contracts ABI.
 ## Table of contents
 
  - [Introduction](https://github.com/wingsdao/ABI#introduction)
+ - [Creating a project for valuation forecast](https://github.com/wingsdao/ABI#creating-a-project-for-valuation-forecast)
  - [Making a forecast](https://github.com/wingsdao/ABI#making-a-forecast)
- - [Creating and managing DAO](https://github.com/wingsdao/ABI#creating-and-managing-dao)
 
 ---
 
@@ -54,117 +54,29 @@ const forecasting = Forecasting.at(forecastingAddress)
 
 ---
 
-# Making a forecast
-
-This step by step tutorial will walkthrough from the beginning, assuming you already have wings tokens, but didn't reserve or lock any of them.
-We will refer to forecaster address as `forecaster`.
-
-#### 1. Approve wings amount to reserve
-
-In order to reserve wings give User Storage permission to transfer wings.
-
-```js
-await token.approve(userStorage.address, amount, {
-  from: forecaster
-})
-```
-
-**Parameters:**
- - `amount` - uint256 - amount of wings tokens to reserve
-
-
-#### 2. Reserve wings
-
-After the approval, you can reserve wings. Reserved wings will become locked wings after you'll make a forecast.
-
-```js
-await userStorage.reserveWings(
-  amount,
-  {
-    from: forecaster
-  }
-)
-```
-
-#### 3. Add account address to DAO
-
-When making new forecast the first step is to add your account address to DAO.
-
-```js
-const daoId = (await dao.id.call()).toString()
-
-await wings.addForecasterToDAO(daoId, {
-  from: forecaster
-})
-```
-
-#### 4. Place forecast
-
-After your account address was added to DAO you can place your forecast.
-
-```js
-await forecasting.addForecast(
-  forecast,
-  messageHash,
-  {
-    from: forecaster
-  }
-)
-```
-
-**Parameters:**
- - `forecast` - uint256 - forecasted amount
- - `messageHash` - bytes32 - ipfs hash of message (message is a buffered string)
-
----
-
-## Additional methods
-
-#### Change forecast
-
-When your forecast is already placed you can change/update it.
-
-```js
-await forecasting.changeForecast(
-  forecast,
-  messageHash,
-  {
-    from: forecaster
-  }
-)
-```
-
-**Parameters:**
- - `forecast` - uint256 - forecasted amount
- - `messageHash` - bytes32 - ipfs hash of message (message is a buffered string)
-
-#### Close/Cancel forecast
-
-Depending on the stage of the forecasting you can either close or cancel forecast.
-
-You can **close** forecast in following scenarios:
- - project was stopped by owner;
- - project was rejected by community;
- - crowdsale deadline missed;
- - after crowdsale period;
-
-You can **cancel** forecast from the beginning of the forecasting and to the end of crowdsale period.
-
-*NOTE: `closeForecast` is capable of performing both actions, hence it will automatically identify which one to perform depending on the current state of forecasting*
-
-```js
-await forecasting.closeForecast({ from: forecaster })
-```
-
----
-
-# Creating and managing DAO
+# Creating a project for valuation forecast
 
 First of all you have to have enough wings on your account for wings deposit (we will refer to your account as `creator` in this step by step tutorial).
 
 ### 1. Create DAO
 
 First step in project creation process is creating a DAO. DAO is a main contract in your project hierarchy.
+
+#### Wings Integration with custom crowdsale contract
+
+In case you want to create and use custom crowdsale contract you will need to perform integration with wings.
+
+Currently there are two supported types of integration:
+ - [Wings Light Bridge](https://github.com/wingsdao/wings-light-bridge)
+ - [Wings Full Integration](https://github.com/wingsdao/wings-integration)
+
+*NOTE: Before you create DAO you should already have your crowdsale integrated and deployed.*
+
+---
+
+**Important:** Integration is responsible step and in case of having any doubts or questions please contact Wings team for help.
+
+---
 
 #### approve
 
@@ -263,12 +175,11 @@ await dao.createForecasting(forecastingDurationInHours, ethRewardPart, tokenRewa
 
 **Parameters:**
  - `forecastingDurationInHours` - uint256 - duration of forecasting in hours (from 120 to 360 hours)
- - `ethRewardPart` - uint256 - reward percent of total collected Ether
- - `tokenRewardPart` - uint256 - reward percent of total sold tokens
 
-*NOTE: reward percent must be multiplied by 10000.*
-
-*Example: reward is 1.5% the argument must be passed as 15000.*
+**Notes:**
+ - reward percent must be multiplied by 10000 (*Example: reward is 1.5% the argument must be passed as 15000*)
+ - reward part must be less then 1000000 (100% * 10000)
+ - `tokenRewardPart` must be greater than zero
 
 ### 5. Start Forecasting
 
@@ -527,7 +438,33 @@ await cc.start(startTimestamp, endTimestamp, fundingAddress, { from: creator })
  - `endTimestamp` - uint256 - unix timestamp of the end of crowdsale period
  - `fundingAddress` - address - address of account, which will receive funds, collected during crowdsale period
 
+### 11. Finish crowdsale (prepare to give rewards)
+
+To finish crowdsale and prepare to give rewards make the following call.
+
+```js
+await cc.closeForecasting({ from: creator })
+```
+
 ## Additional functions
+
+### setRewardParts
+
+This DAO method allows you to set/change rewards percent.
+
+```js
+await dao.setRewardsParts(ethRewardPart, tokenRewardPart, { from: creator })
+```
+
+**Parameters:**
+ - `ethRewardPart` - uint256 - reward percent of total collected Ether
+ - `tokenRewardPart` - uint256 - reward percent of total sold tokens
+
+**Notes:**
+ - reward percent must be multiplied by 10000 (*Example: reward is 1.5% the argument must be passed as 15000*)
+ - reward part must be less then 1000000 (100% * 10000)
+ - `tokenRewardPart` must be greater than zero
+ - if you are changing reward parts the new parts must be greater or equal to the old parts
 
 ### update
 
@@ -725,3 +662,107 @@ console.log(JSON.stringify(JSON.stringify(delta)))
 #### Categories:
 
 To get up-to-date list of categories use our [public API](https://apidocs.wings.ai/#/categories/get_dictionary_categories).
+
+---
+
+# Making a forecast
+
+This step by step tutorial will walkthrough from the beginning, assuming you already have wings tokens, but didn't reserve or lock any of them.
+We will refer to forecaster address as `forecaster`.
+
+#### 1. Approve wings amount to reserve
+
+In order to reserve wings give User Storage permission to transfer wings.
+
+```js
+await token.approve(userStorage.address, amount, {
+  from: forecaster
+})
+```
+
+**Parameters:**
+ - `amount` - uint256 - amount of wings tokens to reserve
+
+
+#### 2. Reserve wings
+
+After the approval, you can reserve wings. Reserved wings will become locked wings after you'll make a forecast.
+
+```js
+await userStorage.reserveWings(
+  amount,
+  {
+    from: forecaster
+  }
+)
+```
+
+#### 3. Add account address to DAO
+
+When making new forecast the first step is to add your account address to DAO.
+
+```js
+const daoId = (await dao.id.call()).toString()
+
+await wings.addForecasterToDAO(daoId, {
+  from: forecaster
+})
+```
+
+#### 4. Place forecast
+
+After your account address was added to DAO you can place your forecast.
+
+```js
+await forecasting.addForecast(
+  forecast,
+  messageHash,
+  {
+    from: forecaster
+  }
+)
+```
+
+**Parameters:**
+ - `forecast` - uint256 - forecasted amount
+ - `messageHash` - bytes32 - ipfs hash of message (message is a buffered string)
+
+---
+
+## Additional methods
+
+#### Change forecast
+
+When your forecast is already placed you can change/update it.
+
+```js
+await forecasting.changeForecast(
+  forecast,
+  messageHash,
+  {
+    from: forecaster
+  }
+)
+```
+
+**Parameters:**
+ - `forecast` - uint256 - forecasted amount
+ - `messageHash` - bytes32 - ipfs hash of message (message is a buffered string)
+
+#### Close/Cancel forecast
+
+Depending on the stage of the forecasting you can either close or cancel forecast.
+
+You can **close** forecast in following scenarios:
+ - project was stopped by owner;
+ - project was rejected by community;
+ - crowdsale deadline missed;
+ - after crowdsale period;
+
+You can **cancel** forecast from the beginning of the forecasting and to the end of crowdsale period.
+
+*NOTE: `closeForecast` is capable of performing both actions, hence it will automatically identify which one to perform depending on the current state of forecasting*
+
+```js
+await forecasting.closeForecast({ from: forecaster })
+```
