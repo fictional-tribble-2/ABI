@@ -1,0 +1,4 @@
+bundles:
+  - javascript
+  - solidity
+  - general
