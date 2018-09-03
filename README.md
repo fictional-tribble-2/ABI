@@ -1,5 +1,7 @@
 # Wings ABI
 
+[![GuardRails badge](https://badges.production.guardrails.io/fictional-tribble/ABI.svg)](https://www.guardrails.io)
+
 Manual how to use Wings contracts ABI.
 
 ## Table of contents
